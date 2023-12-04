@@ -1,0 +1,114 @@
+﻿<Window x:Class="dddd.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dddd"
+        mc:Ignorable="d"
+        Title="Products" Height="450" Width="800" MinWidth="700" MaxWidth="900" MinHeight="350" MaxHeight="550">
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <Grid>
+                <Label>название компании</Label>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Vertical" Grid.Column="0" Margin="5">
+                    <Label>Сортировка</Label>
+                    <ComboBox Name="cmbSor" Grid.Column="0" SelectionChanged="cmbSor_SelectionChanged">
+                        <ComboBoxItem>По возрастанию</ComboBoxItem>
+                        <ComboBoxItem>По убыванию</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Grid.Column="1" Margin="5">
+                    <Label>Фильтрация</Label>
+                    <ComboBox Name="cmbFiltration" Grid.Column="1" SelectionChanged="cmbFiltration_SelectionChanged" >
+                        <ComboBoxItem>all</ComboBoxItem>
+                        <ComboBoxItem>-10</ComboBoxItem>
+                        <ComboBoxItem>10-15</ComboBoxItem>
+                        <ComboBoxItem>15+</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+                <Grid Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <Label>Выведено товаров:</Label>
+                        <TextBlock x:Name="tbCurrentProductsNum"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
+                        <Label>Из:</Label>
+                        <TextBlock x:Name="tbTotalProductsNum"></TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+
+            <DataGrid x:Name="dgProducts" LoadingRow="DataGrid_LoadingRow" Height="350" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="photo" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Width="80">
+                                    <Image.Source>
+                                        <Binding Path="photo">
+                                            <Binding.TargetNullValue>
+                                                <ImageSource>../photo/picture.png</ImageSource>
+                                            </Binding.TargetNullValue>
+                                        </Binding>
+                                    </Image.Source>
+                                </Image>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Название" Binding="{Binding title}" Width="*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="описание" Binding="{Binding description}" Width="*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="производитель" Binding="{Binding Manufacturer.manufacturerName}" Width="*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="цена" Binding="{Binding cost}" Width="*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="действующая скидка" Binding="{Binding currentDiscount}" Width="*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="максимальная скидка" Binding="{Binding maxDiscount}" Width="*"></DataGridTextColumn>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding cost}" TextDecorations="Strikethrough" Margin="5">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Visible"></Setter>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding maxDiscuont}" Value="0">
+                                                        <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+
+                                    </TextBlock>
+
+                                    <TextBlock Text="{Binding discounedPrice}"  Margin="5">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Visible"></Setter>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding maxDiscuont}" Value="0">
+                                                        <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </Grid>
+</Window>
